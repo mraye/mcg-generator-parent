@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!ELEMENT configuration
+        (jdbcConnection,domainGenerator,sqlmapGenerator,mapperGenerator,templateGenerator?,table)>
+
+<!ELEMENT jdbcConnection (property*)>
+<!ATTLIST jdbcConnection
+        driverClass CDATA #REQUIRED
+        connectionUrl CDATA #REQUIRED
+        userName CDATA #REQUIRED
+        password CDATA #REQUIRED
+        >
+
+<!ELEMENT property EMPTY>
+<!ATTLIST property
+        name CDATA #REQUIRED
+        value CDATA #REQUIRED
+        >
+
+<!--java domain 生成路径-->
+<!ELEMENT domainGenerator EMPTY>
+<!ATTLIST domainGenerator
+        useClassPath (true|false) #IMPLIED
+        targetPackage CDATA #REQUIRED
+        targetProject CDATA #REQUIRED
+        >
+<!--java sqlmap 生成路径-->
+<!ELEMENT sqlmapGenerator EMPTY>
+<!ATTLIST sqlmapGenerator
+        useClassPath (true|false) #IMPLIED
+        targetPackage CDATA #REQUIRED
+        targetProject CDATA #REQUIRED
+        >
+
+<!--java mapper 生成路径-->
+<!ELEMENT mapperGenerator EMPTY>
+<!ATTLIST mapperGenerator
+        useClassPath (true|false) #IMPLIED
+        targetPackage CDATA #REQUIRED
+        targetProject CDATA #REQUIRED
+        >
+
+<!--模板引擎选择-->
+<!ELEMENT templateGenerator EMPTY>
+<!ATTLIST templateGenerator
+        type CDATA #REQUIRED
+        domainTplLocation CDATA #IMPLIED
+        sqlMapTplLocation CDATA #IMPLIED
+        mapperTplLocation CDATA #IMPLIED
+        >
+
+<!ELEMENT table EMPTY>
+<!ATTLIST table
+        tableName CDATA #REQUIRED
+        domainObjectName CDATA #IMPLIED
+        mapperInterfaceName CDATA #IMPLIED
+        mapperXmlName CDATA #IMPLIED
+        enableLogicalDel (true|false) #IMPLIED
+        logicalDelColName CDATA #IMPLIED
+        >

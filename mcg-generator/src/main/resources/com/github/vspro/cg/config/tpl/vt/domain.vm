@@ -1,0 +1,19 @@
+package ${package};
+
+import lombok.Data;
+#foreach($ipt in $useJSR310Types)
+import ${ipt};
+#end
+
+@Data
+public class ${className} {
+
+#foreach($prop in $javaProperties)
+#if($prop.remarks && "$!prop.remarks"!="" )
+    /** ${prop.remarks} */
+#end
+    private ${prop.javaPropertyName} ${prop.javaProperty};
+
+#end
+
+}

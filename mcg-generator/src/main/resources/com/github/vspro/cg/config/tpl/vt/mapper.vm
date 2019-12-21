@@ -1,0 +1,50 @@
+package ${package};
+
+import ${domainFullType};
+import org.apache.ibatis.annotations.Param;
+import java.util.Collection;
+
+public interface ${interfaceName} {
+
+    int insert(${domainType} ${domainShortName});
+
+    int insertOrUpdate(${domainType} ${domainShortName});
+
+##    int insertSelective(${domainType} ${domainShortName});
+    ${domainType} selectByPrimaryKey(##
+#foreach($prop in $primaryColumns)
+#if($velocityCount != $primaryColumns.size())
+@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty},##
+#else
+@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty}##
+#end
+#end);
+
+    int updateByPrimaryKeySelective(${domainType} ${domainShortName});
+
+    int updateByPrimaryKey(${domainType} ${domainShortName});
+
+    int deleteByPrimaryKey(##
+#foreach($prop in $primaryColumns)
+#if($velocityCount != $primaryColumns.size())
+@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty},##
+#else
+@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty}##
+#end
+#end);
+
+#if($enableLogicalDel)
+    int deleteLogicalByPrimaryKey(##
+#foreach($prop in $primaryColumns)
+#if($velocityCount != $primaryColumns.size())
+@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty},##
+#else
+@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty}##
+#end
+#end);
+#end
+
+    int batchInsert(@Param("list") Collection<${domainType}> list);
+
+}
+

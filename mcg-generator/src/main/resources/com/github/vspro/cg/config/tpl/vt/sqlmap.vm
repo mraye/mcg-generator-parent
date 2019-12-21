@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${namespace}">
+
+
+    <resultMap id="baseResultMap" type="${domainFullType}">
+#foreach($prop in $primaryColumns)
+        <id column="${prop.actualColumnName}" property="${prop.javaProperty}" jdbcType="${prop.jdbcTypeName}"/>
+#end
+#foreach($prop in $baseColumns)
+        <result column="${prop.actualColumnName}" property="${prop.javaProperty}" jdbcType="${prop.jdbcTypeName}"/>
+#end
+#foreach($prop in $blobColumns)
+        <result column="${prop.actualColumnName}" property="${prop.javaProperty}" jdbcType="${prop.jdbcTypeName}"/>
+#end
+    </resultMap>
+
+    <sql id="baseColumns">
+#foreach($prop in $columns)
+        #if($velocityCount != $columns.size())${prop.actualColumnName},
+#else
+${prop.actualColumnName}
+#end
+#end
+    </sql>
+
+    <sql id="insertColumnsVal">
+#foreach($prop in $columns)
+        #if($velocityCount != $columns.size())
+#{${prop.javaProperty}},
+#else
+#{${prop.javaProperty}}
+#end
+#end
+    </sql>
+
+    <sql id="selectiveInsertColumnsVal">
+#foreach($prop in $columns)
+        <if test="$prop.javaProperty != null" >
+            ${prop.actualColumnName} = #{${prop.javaProperty}},
+        </if>
+#end
+    </sql>
+
+    <sql id="updateColumns">
+        <set>
+#foreach($prop in $columns)
+            <if test="${prop.javaProperty} != null #if(${prop.jdbcTypeName}=='VARCHAR') and ${prop.javaProperty} != ''#end">
+                ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}},
+            </if>
+#end
+        </set>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="${domainFullType}">
+        insert into ${tableName}
+        (
+            <include refid="baseColumns"/>
+        )
+        values
+        (
+            <include refid="insertColumnsVal"/>
+        )
+    </insert>
+
+
+   <insert id="insertOrUpdate" parameterType="${domainFullType}">
+       insert into ${tableName}
+       (
+           <include refid="baseColumns"/>
+       )
+       values
+       (
+           <include refid="insertColumnsVal"/>
+       )
+       ON DUPLICATE KEY UPDATE
+       <trim suffixOverrides=",">
+           <include refid="selectiveInsertColumnsVal"/>
+       </trim>
+   </insert>
+
+
+##    <insert id="insertSelective" parameterType="${domainFullType}" >
+##        insert into ${tableName}
+##        <trim prefix="(" suffix=")" suffixOverrides="," >
+###foreach($prop in $columns)
+##            <if test="$prop.javaProperty != null" >
+##                ${prop.actualColumnName},
+##            </if>
+###end
+##        </trim>
+##        <trim prefix="values (" suffix=")" suffixOverrides="," >
+###foreach($prop in $columns)
+##                <if test="$prop.javaProperty != null" >
+##                    #{${prop.javaProperty}},
+##                </if>
+###end
+##        </trim>
+##    </insert>
+
+    <select id="selectByPrimaryKey" resultMap="baseResultMap" parameterType="map" >
+        select
+        <include refid="baseColumns"/>
+        from ${tableName}
+        <where>
+            <trim suffixOverrides="and">
+#foreach($prop in $primaryColumns)##
+                and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
+#end##
+            </trim>
+        </where>
+    </select>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="${domainFullType}" >
+        update ${tableName}
+        <set>
+#foreach($prop in $columnsNoPrimaryKey)
+            <if test="${prop.javaProperty} != null #if(${prop.jdbcTypeName}=='VARCHAR') and ${prop.javaProperty} != ''#end">
+                ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}},
+            </if>
+#end
+        </set>
+        <where>
+            <trim suffixOverrides="and">
+#foreach($prop in $primaryColumns)
+                and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
+#end
+            </trim>
+        </where>
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="${domainFullType}" >
+        update ${tableName}
+        <set>
+#foreach($prop in $columnsNoPrimaryKey)
+            ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}},
+#end
+        </set>
+        <where>
+            <trim suffixOverrides="and">
+#foreach($prop in $primaryColumns)
+                and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
+#end
+            </trim>
+        </where>
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="map" >
+        delete from ${tableName}
+        <where>
+            <trim suffixOverrides="and">
+#foreach($prop in $primaryColumns)
+                and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
+#end
+            </trim>
+        </where>
+    </delete>
+
+#if($enableLogicalDel)
+    <update id="deleteLogicalByPrimaryKey" parameterType="map" >
+        update ${tableName}
+        set ${logicalDelColName}=1
+        <where>
+            <trim suffixOverrides="and">
+#foreach($prop in $primaryColumns)
+                and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
+#end
+            </trim>
+        </where>
+    </update>
+#end
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
+        insert into ${tableName}
+        (
+            <include refid="baseColumns"/>
+        ) values
+        <foreach collection="list" item="obj" separator=",">
+            (
+#foreach($prop in $columns)
+#if($velocityCount != $columns.size())
+                #{obj.${prop.javaProperty}},
+#else
+                #{obj.${prop.javaProperty}}
+#end
+#end
+            )
+        </foreach>
+    </insert>
+
+</mapper>
