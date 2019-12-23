@@ -44,6 +44,8 @@
 <!ELEMENT templateGenerator EMPTY>
 <!ATTLIST templateGenerator
         type CDATA #REQUIRED
+        useClassPath (true|false) #IMPLIED
+        rootDir CDATA #IMPLIED
         domainTplLocation CDATA #IMPLIED
         sqlMapTplLocation CDATA #IMPLIED
         mapperTplLocation CDATA #IMPLIED

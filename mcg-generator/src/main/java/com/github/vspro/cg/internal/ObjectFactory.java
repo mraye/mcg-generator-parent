@@ -89,7 +89,14 @@ public class ObjectFactory {
         } else if (type.equalsIgnoreCase(CfgNodeConstants.TPL_ENGINE_TYPE_FM)) {
             clz = FMEngineClient.class.getName();
         }
-        EngineClient engineClient = (EngineClient) createInternalObject(clz);
-        return engineClient;
+
+        try {
+            Class<?> clazz = internalClassForName(clz);
+            EngineClient engineClient = (EngineClient) clazz.getConstructor(ContextHolder.class)
+                                                                .newInstance(contextHolder);
+            return engineClient;
+        } catch (Exception e) {
+            throw new RuntimeException(Messages.getString("ObjectReflectiveError.0"), e); //$NON-NLS-1$
+        }
     }
 }

@@ -2,8 +2,11 @@ package com.github.vspro.cg.template;
 
 import com.github.vspro.cg.codegen.GeneratedFile;
 import com.github.vspro.cg.config.context.ContextHolder;
+import com.github.vspro.cg.exception.TplRenderException;
 import com.github.vspro.cg.internal.ObjectFactory;
 import com.github.vspro.cg.internal.db.table.IntrospectedTable;
+
+import static com.github.vspro.cg.util.Messages.getString;
 
 public  class DefaultTemplateClient implements TemplateClient{
 
@@ -30,8 +33,8 @@ public  class DefaultTemplateClient implements TemplateClient{
 			t.setContent(engineClient.render(t));
 			return t;
 		} catch (Exception e) {
-
+			e.printStackTrace();
+			throw new TplRenderException(getString("TplRenderError.0"));
 		}
-		return null;
 	}
 }

@@ -27,20 +27,35 @@ public class TemplateNodeParser extends BaseNodeParser {
 		String domainTplLocation = properties.getProperty("domainTplLocation");
 		String sqlMapTplLocation = properties.getProperty("sqlMapTplLocation");
 		String mapperTplLocation = properties.getProperty("mapperTplLocation");
+		String useClassPath = properties.getProperty("useClassPath");
+		String rootDir = properties.getProperty("rootDir");
+
 
 		if (!CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type)
 				&& !CfgNodeConstants.TPL_ENGINE_TYPE_VT.equalsIgnoreCase(type)) {
+
 			throw new InvalidException(getString("TplNotFoundError.0"));
 		}
 
-		if (stringHasValue(domainTplLocation) &&
-				(!stringHasValue(sqlMapTplLocation) || !stringHasValue(mapperTplLocation))){
+		if (stringHasValue(useClassPath)){
+			template.setUserClassPath(Boolean.parseBoolean(useClassPath));
+		}else {
+			template.setUserClassPath(true);
+		}
+
+		if (!template.isUserClassPath() &&
+				(!stringHasValue(rootDir)
+						|| !stringHasValue(domainTplLocation)
+						|| !stringHasValue(sqlMapTplLocation)
+						|| !stringHasValue(mapperTplLocation))){
+
 			throw new InvalidException(getString("ValidationError.4"));
 		}
 
 		domainTplLocation = stringHasValue(domainTplLocation) ? domainTplLocation :
 				CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type) ?
 						CfgNodeConstants.TPL_FM_DOMAIN_LOCATION :
+
 						CfgNodeConstants.TPL_VT_DOMAIN_LOCATION;
 
 		mapperTplLocation = stringHasValue(mapperTplLocation) ? mapperTplLocation :
@@ -54,6 +69,7 @@ public class TemplateNodeParser extends BaseNodeParser {
 						CfgNodeConstants.TPL_FM_SQLMAP_LOCATION;
 
 
+		template.setRootDir(rootDir);
 		template.setType(type);
 		template.setDomainTplLocation(domainTplLocation);
 		template.setMapperTplLocation(mapperTplLocation);
