@@ -13,69 +13,81 @@ import static com.github.vspro.cg.util.StringUtil.stringHasValue;
 
 public class TemplateNodeParser extends BaseNodeParser {
 
-	public TemplateNodeParser() {
-		super(CfgNodeConstants.NODE_TEMPLATE);
-	}
+    public TemplateNodeParser() {
+        super(CfgNodeConstants.NODE_TEMPLATE);
+    }
 
-	@Override
-	protected void doInjectProperties(Configuration configuration, Properties properties) throws InvalidException {
+    @Override
+    protected void doInjectProperties(Configuration configuration, Properties properties) throws InvalidException {
 
-		TemplateGeneratorConfiguration template = new TemplateGeneratorConfiguration();
-		configuration.setTemplateGeneratorConfiguration(template);
+        TemplateGeneratorConfiguration template = new TemplateGeneratorConfiguration();
+        configuration.setTemplateGeneratorConfiguration(template);
 
-		String type = properties.getProperty("type");
-		String domainTplLocation = properties.getProperty("domainTplLocation");
-		String sqlMapTplLocation = properties.getProperty("sqlMapTplLocation");
-		String mapperTplLocation = properties.getProperty("mapperTplLocation");
-		String useClassPath = properties.getProperty("useClassPath");
-		String rootDir = properties.getProperty("rootDir");
-
-
-		if (!CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type)
-				&& !CfgNodeConstants.TPL_ENGINE_TYPE_VT.equalsIgnoreCase(type)) {
-
-			throw new InvalidException(getString("TplNotFoundError.0"));
-		}
-
-		if (stringHasValue(useClassPath)){
-			template.setUserClassPath(Boolean.parseBoolean(useClassPath));
-		}else {
-			template.setUserClassPath(true);
-		}
-
-		if (!template.isUserClassPath() &&
-				(!stringHasValue(rootDir)
-						|| !stringHasValue(domainTplLocation)
-						|| !stringHasValue(sqlMapTplLocation)
-						|| !stringHasValue(mapperTplLocation))){
-
-			throw new InvalidException(getString("ValidationError.4"));
-		}
-
-		domainTplLocation = stringHasValue(domainTplLocation) ? domainTplLocation :
-				CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type) ?
-						CfgNodeConstants.TPL_FM_DOMAIN_LOCATION :
-
-						CfgNodeConstants.TPL_VT_DOMAIN_LOCATION;
-
-		mapperTplLocation = stringHasValue(mapperTplLocation) ? mapperTplLocation :
-				CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type) ?
-						CfgNodeConstants.TPL_FM_MAPPER_LOCATION :
-						CfgNodeConstants.TPL_VT_MAPPER_LOCATION;
-
-		sqlMapTplLocation = stringHasValue(sqlMapTplLocation) ? sqlMapTplLocation :
-				CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type) ?
-						CfgNodeConstants.TPL_FM_SQLMAP_LOCATION :
-						CfgNodeConstants.TPL_FM_SQLMAP_LOCATION;
+        String type = properties.getProperty("type");
+        String domainTplLocation = properties.getProperty("domainTplLocation");
+        String sqlMapTplLocation = properties.getProperty("sqlMapTplLocation");
+        String mapperTplLocation = properties.getProperty("mapperTplLocation");
+        String useClassPath = properties.getProperty("useClassPath");
+        String rootDir = properties.getProperty("rootDir");
 
 
-		template.setRootDir(rootDir);
-		template.setType(type);
-		template.setDomainTplLocation(domainTplLocation);
-		template.setMapperTplLocation(mapperTplLocation);
-		template.setSqlMapTplLocation(sqlMapTplLocation);
+        if (!CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type)
+                && !CfgNodeConstants.TPL_ENGINE_TYPE_VT.equalsIgnoreCase(type)) {
 
-		template.validate();
+            throw new InvalidException(getString("TplNotFoundError.0"));
+        }
 
-	}
+        if (stringHasValue(useClassPath)) {
+            template.setUserClassPath(Boolean.parseBoolean(useClassPath));
+        } else {
+            template.setUserClassPath(true);
+        }
+
+        if (!template.isUserClassPath() &&
+                (!stringHasValue(rootDir)
+                        || !stringHasValue(domainTplLocation)
+                        || !stringHasValue(sqlMapTplLocation)
+                        || !stringHasValue(mapperTplLocation))) {
+
+            throw new InvalidException(getString("ValidationError.4"));
+        }
+
+        rootDir = stringHasValue(rootDir) ? rootDir :
+                CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type) ?
+                        CfgNodeConstants.TPL_FM_PREFIX : null;
+
+        domainTplLocation = stringHasValue(domainTplLocation) ? domainTplLocation :
+                CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type) ?
+                        CfgNodeConstants.TPL_FM_DOMAIN_LOCATION :
+
+                        CfgNodeConstants.TPL_VT_DOMAIN_LOCATION;
+
+        mapperTplLocation = stringHasValue(mapperTplLocation) ? mapperTplLocation :
+                CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type) ?
+                        CfgNodeConstants.TPL_FM_MAPPER_LOCATION :
+                        CfgNodeConstants.TPL_VT_MAPPER_LOCATION;
+
+        sqlMapTplLocation = stringHasValue(sqlMapTplLocation) ? sqlMapTplLocation :
+                CfgNodeConstants.TPL_ENGINE_TYPE_FM.equalsIgnoreCase(type) ?
+                        CfgNodeConstants.TPL_FM_SQLMAP_LOCATION :
+                        CfgNodeConstants.TPL_FM_SQLMAP_LOCATION;
+
+        if (CfgNodeConstants.TPL_ENGINE_TYPE_VT.equalsIgnoreCase(type)
+                && template.isUserClassPath() && stringHasValue(properties.getProperty("domainTplLocation"))) {
+
+            domainTplLocation = rootDir + domainTplLocation;
+            mapperTplLocation = rootDir + mapperTplLocation;
+            sqlMapTplLocation = rootDir + sqlMapTplLocation;
+        }
+
+
+        template.setRootDir(rootDir);
+        template.setType(type);
+        template.setDomainTplLocation(domainTplLocation);
+        template.setMapperTplLocation(mapperTplLocation);
+        template.setSqlMapTplLocation(sqlMapTplLocation);
+
+        template.validate();
+
+    }
 }

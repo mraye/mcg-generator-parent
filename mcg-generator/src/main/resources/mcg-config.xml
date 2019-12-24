@@ -10,30 +10,30 @@
                     userName="root" password="111111"/>
 
 <!--    可以是绝对路径-->
-    <domainGenerator useClassPath="false"
-            targetPackage="com.github.vspro.domain"
-            targetProject="E:\code-gen"/>
+<!--    <domainGenerator useClassPath="false"-->
+<!--            targetPackage="com.github.vspro.domain"-->
+<!--            targetProject="E:\code-gen"/>-->
 
-    <sqlmapGenerator useClassPath="false"
-            targetPackage="com.github.vspro.sqlmap"
-            targetProject="E:\code-gen"/>
+<!--    <sqlmapGenerator useClassPath="false"-->
+<!--            targetPackage="com.github.vspro.sqlmap"-->
+<!--            targetProject="E:\code-gen"/>-->
 
-    <mapperGenerator useClassPath="false"
-            targetPackage="com.github.vspro.dao"
-            targetProject="E:\code-gen"/>
+<!--    <mapperGenerator useClassPath="false"-->
+<!--            targetPackage="com.github.vspro.dao"-->
+<!--            targetProject="E:\code-gen"/>-->
 
 <!--    默认是相对路径-->
-<!--    <domainGenerator-->
-<!--            targetPackage="com.github.vspro.persistent.domain"-->
-<!--            targetProject="src/main/java"/>-->
+    <domainGenerator
+            targetPackage="com.github.vspro.persistent.domain"
+            targetProject="src/main/java"/>
 
-<!--    <sqlmapGenerator-->
-<!--            targetPackage="mappings"-->
-<!--            targetProject="src/main/resources"/>-->
+    <sqlmapGenerator
+            targetPackage="mappings"
+            targetProject="src/main/resources"/>
 
-<!--    <mapperGenerator-->
-<!--            targetPackage="com.github.vspro.persistent.dao"-->
-<!--            targetProject="src/main/java"/>-->
+    <mapperGenerator
+            targetPackage="com.github.vspro.persistent.dao"
+            targetProject="src/main/java"/>
 
 
 <!--    默认模板引擎是velocity-->

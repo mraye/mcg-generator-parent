@@ -1,9 +1,12 @@
 package ${package};
+import lombok.Data;
 
 <#list useJSR310Types as ipt>
 import ${ipt};
 </#list>
 
+
+@Data
 public class ${className} {
 
 <#list javaProperties as prop>

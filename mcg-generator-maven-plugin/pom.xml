@@ -44,6 +44,7 @@
     </dependencies>
 
     <build>
+        <finalName>mcg-generator-maven-plugin</finalName>
         <plugins>
             <!--      解决-->
             <!--      Execution default-descriptor of goal-->

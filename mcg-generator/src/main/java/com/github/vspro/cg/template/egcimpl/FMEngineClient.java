@@ -32,12 +32,12 @@ public class FMEngineClient extends AbstractEngineClient {
     @Override
     public void init() {
         configuration = new Configuration(Configuration.VERSION_2_3_22);
+        String rootDir = contextHolder.getTemplateGeneratorConfiguration().getRootDir();
         if (contextHolder.getTemplateGeneratorConfiguration().isUserClassPath()) {
-            configuration.setTemplateLoader(new ClassTemplateLoader(FMEngineClient.class, getTplRootDir()));
-
+            configuration.setTemplateLoader(new ClassTemplateLoader(Thread.currentThread().getContextClassLoader(), rootDir));
         } else {
             try {
-                configuration.setDirectoryForTemplateLoading(new File(contextHolder.getTemplateGeneratorConfiguration().getRootDir()));
+                configuration.setDirectoryForTemplateLoading(new File(rootDir));
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new TplRenderException(getString("TplRenderError.0"));
@@ -47,14 +47,6 @@ public class FMEngineClient extends AbstractEngineClient {
         configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
     }
 
-    /**
-     * 如果自定义模板，需要指定模板放置的根路径
-     *
-     * @return
-     */
-    protected String getTplRootDir() {
-        return CfgNodeConstants.TPL_FM_PREFIX;
-    }
 
     @Override
     public <T extends GeneratedFile> String render(T gf) {

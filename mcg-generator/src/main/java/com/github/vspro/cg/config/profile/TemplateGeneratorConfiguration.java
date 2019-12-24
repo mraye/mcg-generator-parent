@@ -23,7 +23,8 @@ public class TemplateGeneratorConfiguration extends PropertyHolder implements Va
 	//指定mapper生成模板文件位置
 	private String mapperTplLocation;
 
-	private boolean userClassPath;
+	//默认是读取类路径
+	private boolean userClassPath=true;
 
 	private String rootDir;
 
