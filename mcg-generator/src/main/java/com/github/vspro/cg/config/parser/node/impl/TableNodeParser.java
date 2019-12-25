@@ -29,6 +29,7 @@ public class TableNodeParser extends BaseNodeParser {
 		String mapperXmlName = properties.getProperty("mapperXmlName");
 		String enableLogicalDel = properties.getProperty("enableLogicalDel");
 		String logicalDelColName = properties.getProperty("logicalDelColName");
+		String logicalDelColVal = properties.getProperty("logicalDelColVal");
 
 		String schema = schema(connectionURL);
 		table.setSchema(schema);
@@ -37,6 +38,7 @@ public class TableNodeParser extends BaseNodeParser {
 		table.setDomainObjectName(domainObjectName);
 		table.setEnableLogicalDel(Boolean.parseBoolean(enableLogicalDel));
 		table.setLogicalDelColName(logicalDelColName);
+		table.setLogicalDelColVal(logicalDelColVal);
 		table.validate();
 
 		if (!stringHasValue(mapperInterfaceName)) {

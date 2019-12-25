@@ -144,7 +144,11 @@
 <#if enableLogicalDel>
     <update id="deleteLogicalByPrimaryKey" parameterType="map" >
         update ${tableName}
-        set ${logicalDelColName}=1
+        <#if logicalDelColValIsNum>
+            set ${logicalDelColName}=${logicalDelColVal}
+        <#else>
+            set ${logicalDelColName}='${logicalDelColVal}'
+        </#if>
         <where>
             <trim suffixOverrides="and">
                 <#list primaryColumns as prop>

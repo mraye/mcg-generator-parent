@@ -6,6 +6,8 @@ import com.github.vspro.cg.config.profile.TableConfiguration;
 import com.github.vspro.cg.internal.db.table.IntrospectedTable;
 import com.github.vspro.cg.template.context.TplContext;
 
+import static com.github.vspro.cg.util.StringUtil.stringHasValue;
+
 public class XmlMapperGeneratedFile extends GeneratedFile {
 
     public XmlMapperGeneratedFile(ContextHolder contextHolder) {
@@ -54,6 +56,8 @@ public class XmlMapperGeneratedFile extends GeneratedFile {
 
         tplContext.put("enableLogicalDel", enableLogicalDel());
         tplContext.put("logicalDelColName", getLogicalDelColName() == null ? "" : getLogicalDelColName());
+        tplContext.put("logicalDelColVal", getLogicalDelColVal() == null ? "" : getLogicalDelColVal());
+        tplContext.put("logicalDelColValIsNum", logicalDelColValIsNum());
         tplContext.put("tableName", getTableName());
 
     }
@@ -83,5 +87,19 @@ public class XmlMapperGeneratedFile extends GeneratedFile {
         return getTableConfiguration().getLogicalDelColName();
     }
 
+    private boolean logicalDelColValIsNum(){
+        if (!stringHasValue(getLogicalDelColVal())){
+            return false;
+        }
+        try {
+            Integer.parseInt(getLogicalDelColVal());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
+    private String getLogicalDelColVal() {
+        return getTableConfiguration().getLogicalDelColVal();
+    }
 }

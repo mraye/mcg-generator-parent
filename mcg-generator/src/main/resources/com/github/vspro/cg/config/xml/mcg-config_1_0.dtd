@@ -59,4 +59,5 @@
         mapperXmlName CDATA #IMPLIED
         enableLogicalDel (true|false) #IMPLIED
         logicalDelColName CDATA #IMPLIED
+        logicalDelColVal CDATA #IMPLIED
         >
