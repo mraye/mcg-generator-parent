@@ -11,8 +11,10 @@
 
 <!--    可以是绝对路径-->
     <domainGenerator useClassPath="false"
-            targetPackage="com.github.vspro.domain"
-            targetProject="E:\code-gen"/>
+                     targetPackage="com.github.vspro.domain"
+                     targetProject="E:\code-gen"/>
+<!--        <property name="rootClass" value="com.github.vspro.cg.domin.BaseEntity"/>-->
+<!--    </domainGenerator>-->
 
     <sqlmapGenerator useClassPath="false"
             targetPackage="com.github.vspro.sqlmap"
@@ -21,6 +23,8 @@
     <mapperGenerator useClassPath="false"
             targetPackage="com.github.vspro.dao"
             targetProject="E:\code-gen"/>
+
+    <templateGenerator type="fm"/>
 
 <!--    默认是相对路径-->
 <!--    <domainGenerator-->

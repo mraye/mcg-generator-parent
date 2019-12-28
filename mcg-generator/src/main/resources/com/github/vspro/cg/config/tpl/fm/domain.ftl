@@ -1,13 +1,16 @@
 package ${package};
-import lombok.Data;
 
+<#if rootClass?? && rootClass?trim?length gt 1>
+import ${rootClass}
+</#if>
+import lombok.Data;
 <#list useJSR310Types as ipt>
 import ${ipt};
 </#list>
 
-
 @Data
-public class ${className} {
+public class ${className}<#if rootClass?? && rootClass?trim?length gt 1> extends ${rootClassShortName}</#if>{
+
 
 <#list javaProperties as prop>
 

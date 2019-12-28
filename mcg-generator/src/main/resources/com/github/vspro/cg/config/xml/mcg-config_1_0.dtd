@@ -18,7 +18,7 @@
         >
 
 <!--java domain 生成路径-->
-<!ELEMENT domainGenerator EMPTY>
+<!ELEMENT domainGenerator (property*)>
 <!ATTLIST domainGenerator
         useClassPath (true|false) #IMPLIED
         targetPackage CDATA #REQUIRED

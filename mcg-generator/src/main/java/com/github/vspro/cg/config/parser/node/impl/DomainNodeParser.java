@@ -25,9 +25,11 @@ public class DomainNodeParser extends BaseNodeParser {
 		String targetPackage = properties.getProperty("targetPackage");
 		String targetProject = properties.getProperty("targetProject");
 		String useClassPath = properties.getProperty("useClassPath");
+		String rootClass = properties.getProperty("rootClass");
 
 		domain.setTargetPackage(targetPackage);
 		domain.setTargetProject(targetProject);
+		domain.setRootClass(rootClass);
 		if (stringHasValue(useClassPath)){
 			domain.setUserClassPath(Boolean.parseBoolean(useClassPath));
 		}else {

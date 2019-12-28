@@ -4,6 +4,7 @@ import com.github.vspro.cg.config.Configuration;
 import com.github.vspro.cg.exception.InvalidException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,24 @@ public abstract class BaseNodeParser implements NodeParser {
 	public void parseNode(Configuration configuration, Node node) throws InvalidException {
 
 		Properties properties = parseProperties(node);
+		parsePropertyOfChildNodes(node, properties);
 		doInjectProperties(configuration, properties);
+	}
+
+	protected void parsePropertyOfChildNodes(Node node, Properties properties){
+		if (node.hasChildNodes()){
+			NodeList childNodes = node.getChildNodes();
+			for (int i=0; i < childNodes.getLength(); i++){
+				Node item = childNodes.item(i);
+				if (item.getNodeType() != Node.ELEMENT_NODE) {
+					continue;
+				}
+				NamedNodeMap attributes = item.getAttributes();
+				Node name = attributes.getNamedItem("name");
+				Node value = attributes.getNamedItem("value");
+				properties.put(parsePropertyToken(name.getNodeValue()), parsePropertyToken(value.getNodeValue()));
+			}
+		}
 	}
 
 	protected abstract void doInjectProperties(Configuration configuration, Properties properties) throws InvalidException;
