@@ -68,7 +68,8 @@ public class DomainGeneratorConfiguration extends PropertyHolder implements Vali
         if (rootClassProperties == null) {
             try {
                 ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-                Class<?> clz = contextClassLoader.loadClass(rootClass);
+
+                Class<?> clz = Class.forName(rootClass, true, contextClassLoader);
                 Field[] declaredFields = clz.getDeclaredFields();
                 if (declaredFields !=null && declaredFields.length >0){
                     rootClassProperties  =new HashSet<>();
@@ -79,6 +80,7 @@ public class DomainGeneratorConfiguration extends PropertyHolder implements Vali
                     }
                 }
             } catch (ClassNotFoundException e) {
+                e.printStackTrace();
                 throw new CodeAutoGenException(getString("ValidationError.4"));
             }
         }

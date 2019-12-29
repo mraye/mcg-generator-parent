@@ -1,16 +1,26 @@
 package ${package};
 
 import ${domainFullType};
+#if($rootInterface && "$!rootInterface"!="")
+import ${rootInterface};
+#end
 import org.apache.ibatis.annotations.Param;
+#if($interfaceMethods.contains('batchInsert'))
 import java.util.Collection;
+#end
 
-public interface ${interfaceName} {
+public interface ${interfaceName}#if($rootInterface && "$!rootInterface"!="") extends ${rootInterfaceShortName}<${domainType}>#end {
 
+#if($interfaceMethods.size()>0)
+#if($interfaceMethods.contains('insert'))
     int insert(${domainType} ${domainShortName});
+#end
 
+#if($interfaceMethods.contains('insertOrUpdate'))
     int insertOrUpdate(${domainType} ${domainShortName});
+#end
 
-##    int insertSelective(${domainType} ${domainShortName});
+#if($interfaceMethods.contains('selectByPrimaryKey'))
     ${domainType} selectByPrimaryKey(##
 #foreach($prop in $primaryColumns)
 #if($velocityCount != $primaryColumns.size())
@@ -19,13 +29,21 @@ public interface ${interfaceName} {
 @Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty}##
 #end
 #end);
+#end
 
+#if($interfaceMethods.contains('selectOneSelective'))
     ${domainType} selectOneSelective(${domainType} ${domainShortName});
+#end
 
+#if($interfaceMethods.contains('updateByPrimaryKeySelective'))
     int updateByPrimaryKeySelective(${domainType} ${domainShortName});
+#end
 
+#if($interfaceMethods.contains('updateByPrimaryKey'))
     int updateByPrimaryKey(${domainType} ${domainShortName});
+#end
 
+#if($interfaceMethods.contains('deleteByPrimaryKey'))
     int deleteByPrimaryKey(##
 #foreach($prop in $primaryColumns)
 #if($velocityCount != $primaryColumns.size())
@@ -34,7 +52,9 @@ public interface ${interfaceName} {
 @Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty}##
 #end
 #end);
+#end
 
+#if($interfaceMethods.contains('deleteLogicalByPrimaryKey'))
 #if($enableLogicalDel)
     int deleteLogicalByPrimaryKey(##
 #foreach($prop in $primaryColumns)
@@ -45,8 +65,12 @@ public interface ${interfaceName} {
 #end
 #end);
 #end
+#end
 
+#if($interfaceMethods.contains('batchInsert'))
     int batchInsert(@Param("list") Collection<${domainType}> list);
+#end
 
+#end
 }
 

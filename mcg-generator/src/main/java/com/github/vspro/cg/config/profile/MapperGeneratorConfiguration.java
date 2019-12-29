@@ -7,6 +7,8 @@ import com.github.vspro.cg.exception.InvalidException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,6 +34,7 @@ public class MapperGeneratorConfiguration extends PropertyHolder implements Vali
         add("insert");
         add("insertOrUpdate");
         add("selectByPrimaryKey");
+        add("selectOneSelective");
         add("updateByPrimaryKeySelective");
         add("updateByPrimaryKey");
         add("deleteByPrimaryKey");
@@ -77,7 +80,7 @@ public class MapperGeneratorConfiguration extends PropertyHolder implements Vali
         } else {
             try {
                 ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
-                Class<?> clz = contextClassLoader.loadClass(rootInterface);
+                Class<?> clz = Class.forName(rootInterface, true, contextClassLoader);
                 Method[] declaredMethods = clz.getDeclaredMethods();
                 if (declaredMethods != null && declaredMethods.length > 0) {
                     rootInterfaceMethods = new HashSet<>();
@@ -88,7 +91,7 @@ public class MapperGeneratorConfiguration extends PropertyHolder implements Vali
                     }
                 }
 
-                if (rootInterfaceMethods.isEmpty()) {
+                if (rootInterfaceMethods == null || rootInterfaceMethods.isEmpty()) {
                     return defaultInterfaceMethods;
                 }
                 return defaultInterfaceMethods.stream()

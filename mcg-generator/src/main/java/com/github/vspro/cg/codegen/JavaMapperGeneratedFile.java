@@ -68,13 +68,13 @@ public class JavaMapperGeneratedFile extends GeneratedFile {
 		tplContext.put("rootInterface", getRootInterface());
 		tplContext.put("rootInterfaceShortName", getRootInterfaceShortName());
 		//如果指定了父接口，需要合并默认接口的方法，
-		//如果父接口还有其他接口，还需要重写sqlmap模板！！
-//		Set<String> interfaceMethods = mergeInterfaceMethod();
-//		if (!enableLogicalDel()){
-//			interfaceMethods.remove("deleteLogicalByPrimaryKey");
-//		}
-//
-//		tplContext.put("interfaceMethods", interfaceMethods);
+		//如果父接口除了默认方法还有其他方法，还需要重写sqlmap模板！！
+		Set<String> interfaceMethods = mergeInterfaceMethod();
+		if (!enableLogicalDel()){
+			interfaceMethods.remove("deleteLogicalByPrimaryKey");
+		}
+
+		tplContext.put("interfaceMethods", interfaceMethods);
 	}
 
 	private String getRootInterface() {

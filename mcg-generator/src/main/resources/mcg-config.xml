@@ -22,9 +22,9 @@
 
     <mapperGenerator useClassPath="false"
             targetPackage="com.github.vspro.dao"
-                     targetProject="E:\code-gen"/>
+                     targetProject="E:\code-gen">
 <!--        <property name="rootInterface" value=""/>-->
-<!--    </mapperGenerator>-->
+    </mapperGenerator>
 
     <templateGenerator type="fm"/>
 

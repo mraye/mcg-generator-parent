@@ -1,7 +1,7 @@
 package ${package};
 
 #if($rootClass && "$!rootClass"!="")
-import ${rootClass}
+import ${rootClass};
 #end
 import lombok.Data;
 #foreach($ipt in $useJSR310Types)
@@ -9,7 +9,7 @@ import ${ipt};
 #end
 
 @Data
-public class ${className}#if($rootClass && "$!rootClass"!="") extend ${rootClassShortName}#end{
+public class ${className}#if($rootClass && "$!rootClass"!="") extends ${rootClassShortName}#end {
 
 #foreach($prop in $javaProperties)
 #if($prop.remarks && "$!prop.remarks"!="" )
