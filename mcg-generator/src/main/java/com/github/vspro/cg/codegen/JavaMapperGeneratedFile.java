@@ -7,6 +7,10 @@ import com.github.vspro.cg.internal.db.table.IntrospectedTable;
 import com.github.vspro.cg.template.context.TplContext;
 import com.github.vspro.cg.util.JavaBeanUtil;
 
+import java.util.Set;
+
+import static com.github.vspro.cg.util.StringUtil.stringHasValue;
+
 public class JavaMapperGeneratedFile extends GeneratedFile {
 
 	public JavaMapperGeneratedFile(ContextHolder contextHolder) {
@@ -50,12 +54,37 @@ public class JavaMapperGeneratedFile extends GeneratedFile {
 		//exampleDo
 		tplContext.put("domainShortName", JavaBeanUtil.getCamelCaseString(getTableConfiguration().getDomainObjectName(),false));
 
+		//可能会有多个主键
 		tplContext.put("primaryColumns", introspectedTable.getPrimaryKeyColumns());
 
 
+
+		//启动逻辑删除
 		tplContext.put("enableLogicalDel", enableLogicalDel());
 		tplContext.put("logicalDelColName", getLogicalDelColName() == null?"":getLogicalDelColName());
 
+		//设置父接口
+        //指定了父接口，就必须指定自定义的sqlmap模板！！
+		tplContext.put("rootInterface", getRootInterface());
+		tplContext.put("rootInterfaceShortName", getRootInterfaceShortName());
+		//如果指定了父接口，需要合并默认接口的方法，
+		//如果父接口还有其他接口，还需要重写sqlmap模板！！
+//		Set<String> interfaceMethods = mergeInterfaceMethod();
+//		if (!enableLogicalDel()){
+//			interfaceMethods.remove("deleteLogicalByPrimaryKey");
+//		}
+//
+//		tplContext.put("interfaceMethods", interfaceMethods);
+	}
+
+	private String getRootInterface() {
+		return getMapperGeneratorConfiguration().getRootInterface();
+	}
+
+
+	private String getRootInterfaceShortName() {
+		return stringHasValue(getRootInterface()) ?getRootInterface().substring(getRootInterface().lastIndexOf(".") + 1)
+				:null;
 	}
 
 	private MapperGeneratorConfiguration getMapperGeneratorConfiguration() {
@@ -83,5 +112,7 @@ public class JavaMapperGeneratedFile extends GeneratedFile {
 		return getTableConfiguration().getLogicalDelColName();
 	}
 
-
+	public Set<String> mergeInterfaceMethod() {
+		return getMapperGeneratorConfiguration().mergeInterfaceMethod();
+	}
 }

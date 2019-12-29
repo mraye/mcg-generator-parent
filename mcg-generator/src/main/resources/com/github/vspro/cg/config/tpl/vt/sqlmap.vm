@@ -111,6 +111,21 @@ ${prop.actualColumnName}
         </where>
     </select>
 
+    <select id="selectOneSelective" resultMap="baseResultMap" parameterType="${domainFullType}" >
+        select
+        <include refid="baseColumns"/>
+        from ${tableName}
+        <where>
+            <trim suffixOverrides="and">
+#foreach($prop in $columns)##
+                <if test="${prop.javaProperty} != null #if(${prop.jdbcTypeName}=='VARCHAR') and ${prop.javaProperty} != ''#end">
+                    and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
+                </if>
+#end##
+            </trim>
+            limit 1
+        </where>
+    </select>
 
     <update id="updateByPrimaryKeySelective" parameterType="${domainFullType}" >
         update ${tableName}

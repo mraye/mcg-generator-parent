@@ -12,6 +12,7 @@
     <modules>
         <module>mcg-generator</module>
         <module>mcg-generator-maven-plugin</module>
+        <module>spring-mybatis-mcg-generator-example</module>
     </modules>
 
     <properties>

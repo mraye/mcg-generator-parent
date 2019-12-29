@@ -9,6 +9,8 @@ import com.github.vspro.cg.template.context.TplContext;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.github.vspro.cg.util.StringUtil.stringHasValue;
+
 public class JavaModelGeneratedFile extends GeneratedFile {
 
     public JavaModelGeneratedFile(ContextHolder contextHolder) {
@@ -39,8 +41,10 @@ public class JavaModelGeneratedFile extends GeneratedFile {
     public void loadData(IntrospectedTable introspectedTable) {
 
         tplContext = new TplContext();
-        List<IntrospectedColumn> columns = introspectedTable.getColumns()
-                .stream().filter(introspectedColumn -> {
+        List<IntrospectedColumn> columns = getRootClass() == null
+                ? introspectedTable.getColumns()
+                : introspectedTable.getColumns()
+                        .stream().filter(introspectedColumn -> {
                     return !getRootClassProper().contains(introspectedColumn.getJavaProperty());
                 }).collect(Collectors.toList());
 
@@ -67,7 +71,9 @@ public class JavaModelGeneratedFile extends GeneratedFile {
     }
 
     private String getRootClassShortName() {
-        return getRootClass().substring(getRootClass().lastIndexOf(".") + 1);
+        return stringHasValue(getRootClass())
+                ?getRootClass().substring(getRootClass().lastIndexOf(".") + 1)
+                : null;
     }
 
     private Set<String> getRootClassProper() {

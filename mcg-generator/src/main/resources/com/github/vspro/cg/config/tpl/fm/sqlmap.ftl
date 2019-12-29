@@ -94,6 +94,20 @@
         </where>
     </select>
 
+    <select id="selectOneSelective" resultMap="baseResultMap" parameterType="${domainFullType}" >
+        select
+        <include refid="baseColumns"/>
+        from ${tableName}
+        <where>
+            <trim suffixOverrides="and">
+                <#list columns as prop>
+                <if test="${prop.javaProperty} != null <#if prop.jdbcTypeName=='VARCHAR'>and ${prop.javaProperty} != ''</#if> ">
+                    and ${prop.actualColumnName} = <#noparse>#{</#noparse>${prop.javaProperty},jdbcType=${prop.jdbcTypeName}<#noparse>}</#noparse>
+                </if>
+                </#list>
+            </trim>
+        </where>
+    </select>
 
     <update id="updateByPrimaryKeySelective" parameterType="${domainFullType}" >
         update ${tableName}

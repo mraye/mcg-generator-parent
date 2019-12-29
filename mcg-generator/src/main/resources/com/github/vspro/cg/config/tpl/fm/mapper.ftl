@@ -14,6 +14,8 @@ public interface ${interfaceName} {
     <#--##    int insertSelective(${domainType} ${domainShortName});-->
     ${domainType} selectByPrimaryKey(<#list primaryColumns as prop><#if !prop_has_next>@Param("${prop.javaProperty}")${prop.javaPropertyName} ${prop.javaProperty}<#else>@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty},</#if></#list>);
 
+    ${domainType} selectOneSelective(${domainType} ${domainShortName});
+
     int updateByPrimaryKeySelective(${domainType} ${domainShortName});
 
     int updateByPrimaryKey(${domainType} ${domainShortName});

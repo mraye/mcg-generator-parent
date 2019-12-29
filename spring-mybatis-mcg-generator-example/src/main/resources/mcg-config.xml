@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration PUBLIC "-//vspro.github.com//DTD Mcg Generator 1.0//EN"
+        "http://vspro.github.com/dtd/mcg-config_1_0.dtd">
+
+<configuration>
+
+    <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                    connectionUrl="jdbc:mysql://localhost:3306/spring?serverTimezone=UTC&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
+                    userName="root" password="111111"/>
+
+    <domainGenerator useClassPath="true"
+                     targetPackage="com.github.vspro.mcg.example.domain"
+                     targetProject="src/main/java"/>
+
+    <sqlmapGenerator
+            targetPackage="mappings"
+            targetProject="src/main/resources"/>
+
+    <mapperGenerator
+            targetPackage="com.github.vspro.mcg.example.dao"
+            targetProject="src/main/java"/>
+
+    <templateGenerator type="fm"/>
+
+    <!--    暂时不用-->
+
+    <!--    <templateGenerator type="vt" useClassPath="true"-->
+    <!--                       rootDir="/tpl/"-->
+    <!--                       domainTplLocation="domain.vm"-->
+    <!--                       sqlMapTplLocation="sqlmap.vm"-->
+    <!--                       mapperTplLocation="mapper.vm"/>-->
+
+    <!--        <templateGenerator type="vt" useClassPath="false"-->
+    <!--               rootDir="E:\code-gen\"-->
+    <!--               domainTplLocation="domain.vm"-->
+    <!--               sqlMapTplLocation="sqlmap.vm"-->
+    <!--               mapperTplLocation="mapper.vm"/>-->
+
+
+    <!--        <templateGenerator type="fm" useClassPath="false"-->
+    <!--                           rootDir="E:\code-gen\"-->
+    <!--                domainTplLocation="domain.ftl"-->
+    <!--                sqlMapTplLocation="sqlmap.ftl"-->
+    <!--                mapperTplLocation="mapper.ftl"/>-->
+
+    <!--        <templateGenerator type="fm"-->
+    <!--                           rootDir="/tpl/"-->
+    <!--            domainTplLocation="domain.ftl"-->
+    <!--            sqlMapTplLocation="sqlmap.ftl"-->
+    <!--            mapperTplLocation="mapper.ftl"/>-->
+
+    <!--table标签要放在最后！！-->
+    <table tableName="t_sys_user"
+           domainObjectName="SysUserDo"
+           mapperInterfaceName="SysUserDao"
+           mapperXmlName="sys-user"
+           enableLogicalDel="false"
+           logicalDelColName="at_deleted"/>
+
+</configuration>

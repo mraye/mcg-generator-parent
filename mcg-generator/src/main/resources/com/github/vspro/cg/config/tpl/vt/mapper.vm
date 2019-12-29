@@ -20,6 +20,8 @@ public interface ${interfaceName} {
 #end
 #end);
 
+    ${domainType} selectOneSelective(${domainType} ${domainShortName});
+
     int updateByPrimaryKeySelective(${domainType} ${domainShortName});
 
     int updateByPrimaryKey(${domainType} ${domainShortName});

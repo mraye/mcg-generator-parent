@@ -26,9 +26,11 @@ public class MapperNodeParser extends BaseNodeParser {
         String targetPackage = properties.getProperty("targetPackage");
         String targetProject = properties.getProperty("targetProject");
         String useClassPath = properties.getProperty("useClassPath");
+        String rootInterface = properties.getProperty("rootInterface");
 
         mapper.setTargetPackage(targetPackage);
         mapper.setTargetProject(targetProject);
+        mapper.setRootInterface(rootInterface);
 
         if (stringHasValue(useClassPath)) {
             mapper.setUserClassPath(Boolean.parseBoolean(useClassPath));
