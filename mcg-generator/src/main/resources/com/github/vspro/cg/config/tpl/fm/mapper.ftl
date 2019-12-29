@@ -22,10 +22,10 @@ public interface ${interfaceName} {
 
     int deleteByPrimaryKey(<#list primaryColumns as prop><#if !prop_has_next>@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty}<#else>@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty},</#if></#list>);
 
-    <#if enableLogicalDel??>
+    <#if enableLogicalDel>
     int deleteLogicalByPrimaryKey(<#list primaryColumns as prop><#if !prop_has_next>@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty}<#else>@Param("${prop.javaProperty}") ${prop.javaPropertyName} ${prop.javaProperty},</#if></#list>);
-    </#if>
 
+    </#if>
     int batchInsert(@Param("list") Collection<${domainType}> list);
 
 }

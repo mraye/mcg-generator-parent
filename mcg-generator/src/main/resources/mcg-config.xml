@@ -24,7 +24,7 @@
             targetPackage="com.github.vspro.dao"
             targetProject="E:\code-gen"/>
 
-<!--    <templateGenerator type="fm"/>-->
+    <templateGenerator type="fm"/>
 
 <!--    默认是相对路径-->
 <!--    <domainGenerator-->
@@ -58,7 +58,7 @@
            domainObjectName="SysUserDo"
            mapperInterfaceName="SysUserDao"
            mapperXmlName="sys-user"
-           enableLogicalDel="true"
+           enableLogicalDel="false"
            logicalDelColName="at_deleted"
            logicalDelColVal="sad1"/>
 
