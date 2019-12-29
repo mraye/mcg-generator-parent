@@ -103,3 +103,6 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 /target/
 
+/spring-mybatis-mcg-generator-example/target/
+/mcg-generator/target/
+/mcg-generator-maven-plugin/target/
