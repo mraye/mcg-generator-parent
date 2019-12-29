@@ -21,15 +21,15 @@
             targetPackage="com.github.vspro.mcg.example.dao"
             targetProject="src/main/java"/>
 
-    <templateGenerator type="fm"/>
+<!--    <templateGenerator type="fm"/>-->
 
     <!--    暂时不用-->
 
-    <!--    <templateGenerator type="vt" useClassPath="true"-->
-    <!--                       rootDir="/tpl/"-->
-    <!--                       domainTplLocation="domain.vm"-->
-    <!--                       sqlMapTplLocation="sqlmap.vm"-->
-    <!--                       mapperTplLocation="mapper.vm"/>-->
+<!--        <templateGenerator type="vt" useClassPath="true"-->
+<!--                           rootDir="/tpl/"-->
+<!--                           domainTplLocation="domain.vm"-->
+<!--                           sqlMapTplLocation="sqlmap.vm"-->
+<!--                           mapperTplLocation="mapper.vm"/>-->
 
     <!--        <templateGenerator type="vt" useClassPath="false"-->
     <!--               rootDir="E:\code-gen\"-->

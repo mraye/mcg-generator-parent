@@ -33,7 +33,7 @@
         >
 
 <!--java mapper 生成路径-->
-<!ELEMENT mapperGenerator EMPTY>
+<!ELEMENT mapperGenerator (property*)>
 <!ATTLIST mapperGenerator
         useClassPath (true|false) #IMPLIED
         targetPackage CDATA #REQUIRED
