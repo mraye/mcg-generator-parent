@@ -1,0 +1,26 @@
+package ${package};
+
+#if($rootClass && "$!rootClass"!="")
+import ${rootClass};
+#end
+import lombok.Data;
+#foreach($ipt in $useJSR310Types)
+import ${ipt};
+#end
+
+@Data
+public class ${className}#if($rootClass && "$!rootClass"!="") extends ${rootClassShortName}#end {
+
+   /**inject customized property through customized template
+    * ${customize_key}
+    */
+
+#foreach($prop in $javaProperties)
+#if($prop.remarks && "$!prop.remarks"!="" )
+    /** ${prop.remarks} */
+#end
+    private ${prop.javaPropertyName} ${prop.javaProperty};
+
+#end
+
+}

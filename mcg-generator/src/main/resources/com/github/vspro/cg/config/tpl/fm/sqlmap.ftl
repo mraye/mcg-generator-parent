@@ -28,9 +28,9 @@
     <sql id="insertColumnsVal">
         <#list columns as prop>
         <#if !prop_has_next>
-        <#noparse>#{</#noparse>{${prop.javaProperty}<#noparse>}</#noparse>,
+        <#noparse>#{</#noparse>${prop.javaProperty}<#noparse>}</#noparse>
         <#else>
-        <#noparse>#{</#noparse>{prop.javaProperty}<#noparse>}</#noparse>
+        <#noparse>#{</#noparse>${prop.javaProperty}<#noparse>}</#noparse>,
         </#if>
         </#list>
     </sql>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.vspro.mcg.example.dao.CsSysUserDao">
+
+
+    <resultMap id="baseResultMap" type="com.github.vspro.mcg.example.domain.CsSysUserDo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="enabled" property="enabled" jdbcType="BIT"/>
+        <result column="at_deleted" property="atDeleted" jdbcType="BIT"/>
+        <result column="at_create_time" property="atCreateTime" jdbcType="TIMESTAMP"/>
+        <result column="at_modify_time" property="atModifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="baseColumns">
+        id,
+        user_name,
+        password,
+        enabled,
+        at_deleted,
+        at_create_time,
+        at_modify_time
+    </sql>
+
+    <sql id="insertColumnsVal">
+        #{id},
+        #{userName},
+        #{password},
+        #{enabled},
+        #{atDeleted},
+        #{atCreateTime},
+        #{atModifyTime}
+    </sql>
+
+    <sql id="selectiveInsertColumnsVal">
+        <if test="id != null" >
+            id = #{id},
+        </if>
+        <if test="userName != null" >
+            user_name = #{userName},
+        </if>
+        <if test="password != null" >
+            password = #{password},
+        </if>
+        <if test="enabled != null" >
+            enabled = #{enabled},
+        </if>
+        <if test="atDeleted != null" >
+            at_deleted = #{atDeleted},
+        </if>
+        <if test="atCreateTime != null" >
+            at_create_time = #{atCreateTime},
+        </if>
+        <if test="atModifyTime != null" >
+            at_modify_time = #{atModifyTime},
+        </if>
+    </sql>
+
+    <sql id="updateColumns">
+        <set>
+            <if test="id != null ">
+                id = #{id,jdbcType=BIGINT},
+            </if>
+            <if test="userName != null  and userName != ''">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null  and password != ''">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="enabled != null ">
+                enabled = #{enabled,jdbcType=BIT},
+            </if>
+            <if test="atDeleted != null ">
+                at_deleted = #{atDeleted,jdbcType=BIT},
+            </if>
+            <if test="atCreateTime != null ">
+                at_create_time = #{atCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="atModifyTime != null ">
+                at_modify_time = #{atModifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.github.vspro.mcg.example.domain.CsSysUserDo">
+        insert into t_sys_user
+        (
+            <include refid="baseColumns"/>
+        )
+        values
+        (
+            <include refid="insertColumnsVal"/>
+        )
+    </insert>
+
+
+   <insert id="insertOrUpdate" parameterType="com.github.vspro.mcg.example.domain.CsSysUserDo">
+       insert into t_sys_user
+       (
+           <include refid="baseColumns"/>
+       )
+       values
+       (
+           <include refid="insertColumnsVal"/>
+       )
+       ON DUPLICATE KEY UPDATE
+       <trim suffixOverrides=",">
+           <include refid="selectiveInsertColumnsVal"/>
+       </trim>
+   </insert>
+
+
+
+    <select id="selectByPrimaryKey" resultMap="baseResultMap" parameterType="map" >
+        select
+        <include refid="baseColumns"/>
+        from t_sys_user
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+            </trim>
+        </where>
+    </select>
+
+    <select id="selectOneSelective" resultMap="baseResultMap" parameterType="com.github.vspro.mcg.example.domain.CsSysUserDo" >
+        select
+        <include refid="baseColumns"/>
+        from t_sys_user
+        <where>
+            <trim suffixOverrides="and">
+                <if test="id != null ">
+                    and id = #{id,jdbcType=BIGINT}
+                </if>
+                <if test="userName != null  and userName != ''">
+                    and user_name = #{userName,jdbcType=VARCHAR}
+                </if>
+                <if test="password != null  and password != ''">
+                    and password = #{password,jdbcType=VARCHAR}
+                </if>
+                <if test="enabled != null ">
+                    and enabled = #{enabled,jdbcType=BIT}
+                </if>
+                <if test="atDeleted != null ">
+                    and at_deleted = #{atDeleted,jdbcType=BIT}
+                </if>
+                <if test="atCreateTime != null ">
+                    and at_create_time = #{atCreateTime,jdbcType=TIMESTAMP}
+                </if>
+                <if test="atModifyTime != null ">
+                    and at_modify_time = #{atModifyTime,jdbcType=TIMESTAMP}
+                </if>
+            </trim>
+            limit 1
+        </where>
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.github.vspro.mcg.example.domain.CsSysUserDo" >
+        update t_sys_user
+        <set>
+            <if test="userName != null  and userName != ''">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null  and password != ''">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="enabled != null ">
+                enabled = #{enabled,jdbcType=BIT},
+            </if>
+            <if test="atDeleted != null ">
+                at_deleted = #{atDeleted,jdbcType=BIT},
+            </if>
+            <if test="atCreateTime != null ">
+                at_create_time = #{atCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="atModifyTime != null ">
+                at_modify_time = #{atModifyTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+            </trim>
+        </where>
+    </update>
+
+
+    <update id="updateByPrimaryKey" parameterType="com.github.vspro.mcg.example.domain.CsSysUserDo" >
+        update t_sys_user
+        <set>
+            user_name = #{userName,jdbcType=VARCHAR},
+            password = #{password,jdbcType=VARCHAR},
+            enabled = #{enabled,jdbcType=BIT},
+            at_deleted = #{atDeleted,jdbcType=BIT},
+            at_create_time = #{atCreateTime,jdbcType=TIMESTAMP},
+            at_modify_time = #{atModifyTime,jdbcType=TIMESTAMP},
+        </set>
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+            </trim>
+        </where>
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="map" >
+        delete from t_sys_user
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+            </trim>
+        </where>
+    </delete>
+
+
+    <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
+        insert into t_sys_user
+        (
+            <include refid="baseColumns"/>
+        ) values
+        <foreach collection="list" item="obj" separator=",">
+            (
+                #{obj.id},
+                #{obj.userName},
+                #{obj.password},
+                #{obj.enabled},
+                #{obj.atDeleted},
+                #{obj.atCreateTime},
+                #{obj.atModifyTime}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

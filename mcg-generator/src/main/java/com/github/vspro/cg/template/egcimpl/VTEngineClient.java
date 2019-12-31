@@ -6,6 +6,7 @@ import com.github.vspro.cg.template.EngineClient;
 import com.github.vspro.cg.template.context.TplContext;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
@@ -33,6 +34,8 @@ public class VTEngineClient extends AbstractEngineClient {
 			Properties p = new Properties();
             ve.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH,
                     contextHolder.getTemplateGeneratorConfiguration().getRootDir());
+            p.setProperty(Velocity.INPUT_ENCODING, "GBK");
+            p.setProperty(Velocity.OUTPUT_ENCODING, "GBK");
             ve.init(p);
         }
     }
