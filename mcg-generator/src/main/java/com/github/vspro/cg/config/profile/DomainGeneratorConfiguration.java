@@ -70,14 +70,20 @@ public class DomainGeneratorConfiguration extends PropertyHolder implements Vali
                 ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 
                 Class<?> clz = Class.forName(rootClass, true, contextClassLoader);
-                Field[] declaredFields = clz.getDeclaredFields();
-                if (declaredFields !=null && declaredFields.length >0){
-                    rootClassProperties  =new HashSet<>();
-                    for (int i = 0; i <declaredFields.length ; i++) {
-                        Field field = declaredFields[i];
-                        String name = field.getName();
-                        rootClassProperties.add(name);
+                while (clz != null && clz != Object.class) {
+                    Field[] declaredFields = clz.getDeclaredFields();
+                    if (declaredFields != null && declaredFields.length > 0) {
+                        if (rootClassProperties == null) {
+                            rootClassProperties = new HashSet<>();
+                        }
+                        for (int i = 0; i < declaredFields.length; i++) {
+                            Field field = declaredFields[i];
+                            String name = field.getName();
+                            rootClassProperties.add(name);
+                        }
                     }
+
+                    clz = clz.getSuperclass();
                 }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
