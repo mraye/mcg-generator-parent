@@ -62,6 +62,6 @@
            mapperXmlName="sys-user"
            enableLogicalDel="false"
            logicalDelColName="at_deleted"
-           logicalDelColVal="sad1"/>
+           logicalDelColVal="1,2"/>
 
 </configuration>

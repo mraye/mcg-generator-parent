@@ -24,13 +24,13 @@
     </sql>
 
     <sql id="insertColumnsVal">
-        #{{prop.javaProperty}}
-        #{{prop.javaProperty}}
-        #{{prop.javaProperty}}
-        #{{prop.javaProperty}}
-        #{{prop.javaProperty}}
-        #{{prop.javaProperty}}
-        #{{atModifyTime},
+        #{id},
+        #{userName},
+        #{password},
+        #{enabled},
+        #{atDeleted},
+        #{atCreateTime},
+        #{atModifyTime}
     </sql>
 
     <sql id="selectiveInsertColumnsVal">
@@ -83,6 +83,10 @@
         </set>
     </sql>
 
+    <sql id="enableLogicalDelCondition">
+        and at_deleted=0 
+    </sql>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.github.vspro.mcg.example.domain.SysUserDo">
         insert into t_sys_user
         (
@@ -118,6 +122,7 @@
         <where>
             <trim suffixOverrides="and">
                 and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </select>
@@ -178,6 +183,7 @@
         <where>
             <trim suffixOverrides="and">
                 and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </update>
@@ -196,6 +202,7 @@
         <where>
             <trim suffixOverrides="and">
                 and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </update>
@@ -205,10 +212,21 @@
         <where>
             <trim suffixOverrides="and">
                 and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </delete>
 
+    <update id="deleteLogicalByPrimaryKey" parameterType="map" >
+        update t_sys_user
+            set at_deleted=1
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+                <include refid="enableLogicalDelCondition"/>
+            </trim>
+        </where>
+    </update>
 
     <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
         insert into t_sys_user

@@ -12,7 +12,7 @@ public class CsSysUserDo {
 
     private Long id;
 
-    /** ÓÃ»§Ãû */
+    /** ç”¨æˆ·å */
     private String userName;
 
     private String password;

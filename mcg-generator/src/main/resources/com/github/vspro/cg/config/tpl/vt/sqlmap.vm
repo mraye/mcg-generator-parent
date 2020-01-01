@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="${namespace}">
 
-
     <resultMap id="baseResultMap" type="${domainFullType}">
 #foreach($prop in $primaryColumns)
         <id column="${prop.actualColumnName}" property="${prop.javaProperty}" jdbcType="${prop.jdbcTypeName}"/>
@@ -51,6 +50,15 @@ ${prop.actualColumnName}
 #end
         </set>
     </sql>
+
+
+#if($enableLogicalDel)
+    <sql id="enableLogicalDelCondition">
+#if($enableLogicalDel)
+        and ${logicalDelColName}= #if($logicalDelNoColValIsNum)${logicalDelNoColVal} #else '${logicalDelNoColVal}' #end #end
+
+    </sql>
+#end
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="${domainFullType}">
         insert into ${tableName}
@@ -107,6 +115,7 @@ ${prop.actualColumnName}
 #foreach($prop in $primaryColumns)##
                 and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
 #end##
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </select>
@@ -141,6 +150,7 @@ ${prop.actualColumnName}
 #foreach($prop in $primaryColumns)
                 and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
 #end
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </update>
@@ -158,6 +168,7 @@ ${prop.actualColumnName}
 #foreach($prop in $primaryColumns)
                 and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
 #end
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </update>
@@ -169,6 +180,7 @@ ${prop.actualColumnName}
 #foreach($prop in $primaryColumns)
                 and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
 #end
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </delete>
@@ -176,16 +188,17 @@ ${prop.actualColumnName}
 #if($enableLogicalDel)
     <update id="deleteLogicalByPrimaryKey" parameterType="map" >
         update ${tableName}
-#if($logicalDelColValIsNum)
-        set ${logicalDelColName}=${logicalDelColVal}
+#if($logicalDelYesColValIsNum)
+        set ${logicalDelColName}=${logicalDelYesColVal}
 #else
-        set ${logicalDelColName}='${logicalDelColVal}'
+        set ${logicalDelColName}='${logicalDelYesColVal}'
 #end
         <where>
             <trim suffixOverrides="and">
 #foreach($prop in $primaryColumns)
                 and ${prop.actualColumnName} = #{${prop.javaProperty},jdbcType=${prop.jdbcTypeName}}
 #end
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </update>

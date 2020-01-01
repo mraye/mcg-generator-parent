@@ -56,8 +56,17 @@ public class XmlMapperGeneratedFile extends GeneratedFile {
 
         tplContext.put("enableLogicalDel", enableLogicalDel());
         tplContext.put("logicalDelColName", getLogicalDelColName() == null ? "" : getLogicalDelColName());
-        tplContext.put("logicalDelColVal", getLogicalDelColVal() == null ? "" : getLogicalDelColVal());
-        tplContext.put("logicalDelColValIsNum", logicalDelColValIsNum());
+
+//        如果指定了逻辑删除列
+        if (enableLogicalDel() && stringHasValue(getLogicalDelColVal())) {
+            String logicalDelColVal = getLogicalDelColVal();
+            String[] val = logicalDelColVal.split(",");
+
+            tplContext.put("logicalDelYesColVal", !stringHasValue(val[0]) ? "" : val[0]);
+            tplContext.put("logicalDelYesColValIsNum", logicalDelColValIsNum(val[0]));
+            tplContext.put("logicalDelNoColVal", !stringHasValue(val[1]) ? "" : val[1]);
+            tplContext.put("logicalDelNoColValIsNum", logicalDelColValIsNum(val[1]));
+        }
         tplContext.put("tableName", getTableName());
 
     }
@@ -87,12 +96,12 @@ public class XmlMapperGeneratedFile extends GeneratedFile {
         return getTableConfiguration().getLogicalDelColName();
     }
 
-    private boolean logicalDelColValIsNum(){
-        if (!stringHasValue(getLogicalDelColVal())){
+    private boolean logicalDelColValIsNum(String val) {
+        if (!stringHasValue(val)) {
             return false;
         }
         try {
-            Integer.parseInt(getLogicalDelColVal());
+            Integer.parseInt(val);
             return true;
         } catch (NumberFormatException e) {
             return false;

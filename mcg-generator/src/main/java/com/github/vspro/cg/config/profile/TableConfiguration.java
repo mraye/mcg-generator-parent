@@ -105,10 +105,17 @@ public class TableConfiguration extends PropertyHolder implements Validator {
 			throw new InvalidException(getString("ValidationError.4"));
 		}
 
-		if (enableLogicalDel && (!stringHasValue(logicalDelColName)
-				|| !stringHasValue(logicalDelColVal))){
-			throw new InvalidException(getString("ValidationError.4"));
+		if (enableLogicalDel){
+			if (!stringHasValue(logicalDelColName)
+					|| !stringHasValue(logicalDelColVal)){
+				throw new InvalidException(getString("ValidationError.4"));
+			}
+
+			if (logicalDelColVal.split(",").length !=2){
+
+			}
 		}
+
 
 	}
 }

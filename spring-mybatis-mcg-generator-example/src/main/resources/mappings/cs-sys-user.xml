@@ -211,6 +211,15 @@
         </where>
     </delete>
 
+    <update id="deleteLogicalByPrimaryKey" parameterType="map" >
+        update t_sys_user
+        set at_deleted='${logicalDelColVal}'
+        <where>
+            <trim suffixOverrides="and">
+                and id = #{id,jdbcType=BIGINT}
+            </trim>
+        </where>
+    </update>
 
     <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id">
         insert into t_sys_user

@@ -6,7 +6,7 @@
 <configuration>
 
     <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                    connectionUrl="jdbc:mysql://localhost:3306/spring?serverTimezone=UTC&amp;characterEncoding=utf8&amp;allowMultiQueries=true"
+                    connectionUrl="jdbc:mysql://localhost:3306/spring?serverTimezone=UTC&amp;characterEncoding=utf8&amp;allowMultiQueries=true&amp;useSSL=false"
                     userName="root" password="111111"/>
 
     <domainGenerator useClassPath="true"
@@ -55,7 +55,8 @@
            domainObjectName="CsSysUserDo"
            mapperInterfaceName="CsSysUserDao"
            mapperXmlName="cs-sys-user"
-           enableLogicalDel="false"
-           logicalDelColName="at_deleted"/>
+           enableLogicalDel="true"
+           logicalDelColName="at_deleted"
+           logicalDelColVal="1,2"/>
 
 </configuration>

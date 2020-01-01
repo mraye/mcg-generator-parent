@@ -53,6 +53,14 @@
         </set>
     </sql>
 
+    <#if enableLogicalDel>
+    <sql id="enableLogicalDelCondition">
+        <#if enableLogicalDel>
+        and ${logicalDelColName}=<#if logicalDelNoColValIsNum>${logicalDelNoColVal} <#else>'${logicalDelNoColVal}' </#if>
+        </#if>
+    </sql>
+    </#if>
+
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="${domainFullType}">
         insert into ${tableName}
         (
@@ -90,6 +98,7 @@
                  <#list primaryColumns as prop>
                 and ${prop.actualColumnName} = <#noparse>#{</#noparse>${prop.javaProperty},jdbcType=${prop.jdbcTypeName}<#noparse>}</#noparse>
                 </#list>
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </select>
@@ -123,6 +132,7 @@
                 <#list primaryColumns as prop>
                 and ${prop.actualColumnName} = <#noparse>#{</#noparse>${prop.javaProperty},jdbcType=${prop.jdbcTypeName}<#noparse>}</#noparse>
                 </#list>
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </update>
@@ -140,6 +150,7 @@
                 <#list primaryColumns as prop>
                 and ${prop.actualColumnName} = <#noparse>#{</#noparse>${prop.javaProperty},jdbcType=${prop.jdbcTypeName}<#noparse>}</#noparse>
                 </#list>
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </update>
@@ -151,6 +162,7 @@
                 <#list primaryColumns as prop>
                 and ${prop.actualColumnName} = <#noparse>#{</#noparse>${prop.javaProperty},jdbcType=${prop.jdbcTypeName}<#noparse>}</#noparse>
                 </#list>
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </delete>
@@ -158,16 +170,17 @@
 <#if enableLogicalDel>
     <update id="deleteLogicalByPrimaryKey" parameterType="map" >
         update ${tableName}
-        <#if logicalDelColValIsNum>
-            set ${logicalDelColName}=${logicalDelColVal}
+        <#if logicalDelYesColValIsNum>
+            set ${logicalDelColName}=${logicalDelYesColVal}
         <#else>
-            set ${logicalDelColName}='${logicalDelColVal}'
+            set ${logicalDelColName}='${logicalDelYesColVal}'
         </#if>
         <where>
             <trim suffixOverrides="and">
                 <#list primaryColumns as prop>
                 and ${prop.actualColumnName} = <#noparse>#{</#noparse>${prop.javaProperty},jdbcType=${prop.jdbcTypeName}<#noparse>}</#noparse>
                 </#list>
+                <include refid="enableLogicalDelCondition"/>
             </trim>
         </where>
     </update>

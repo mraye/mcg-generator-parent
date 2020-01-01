@@ -20,6 +20,7 @@ public interface CsSysUserDao {
 
     int deleteByPrimaryKey(@Param("id") Long id);
 
+    int deleteLogicalByPrimaryKey(@Param("id") Long id);
 
     int batchInsert(@Param("list") Collection<CsSysUserDo> list);
 

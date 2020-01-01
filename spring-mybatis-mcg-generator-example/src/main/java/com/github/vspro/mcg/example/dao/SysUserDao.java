@@ -6,7 +6,6 @@ import java.util.Collection;
 
 public interface SysUserDao {
 
-
     int insert(SysUserDo sysuserdo);
 
     int insertOrUpdate(SysUserDo sysuserdo);
