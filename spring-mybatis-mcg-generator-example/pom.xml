@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring.version>4.2.6.RELEASE</spring.version>
+        <spring.version>5.2.4.RELEASE</spring.version>
         <springsecurity.version>4.2.2.RELEASE</springsecurity.version>
         <aspectj.version>1.9.2</aspectj.version>
         <mybatis.version>3.4.6</mybatis.version>
